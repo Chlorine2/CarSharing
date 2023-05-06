@@ -20,9 +20,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.carsharing.models.DataSource
 import com.example.carsharing.ui.theme.CarSharingTheme
+import com.example.carsharing.viewModels.SharedViewModel
 
 @Composable
-fun CarsContent(){
+fun CarsContent( viewModel: SharedViewModel, OnListButton :() -> Unit){
 
     val text = remember{ mutableStateOf("") }
     var selectedIndex by remember { mutableStateOf(-1) }
@@ -65,7 +66,7 @@ fun CarsContent(){
         )
         LazyColumn{
             items(DataSource().dataCars()) { data ->
-                carItem(data = data)
+                carItem(data = data, viewModel, OnListButton = OnListButton)
             }
         }
     }

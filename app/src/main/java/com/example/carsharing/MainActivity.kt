@@ -1,5 +1,6 @@
 package com.example.carsharing
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,12 +13,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.carsharing.Screens.DetailedScreen
 import com.example.carsharing.ui.theme.CarSharingTheme
+import com.example.carsharing.viewModels.SharedViewModel
 
+enum class ListOfScreens (){
+    Search(),
+    Rented(),
+    MyCars(),
+    Profile(),
+    Detail()
+
+}
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,15 +49,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-enum class ListOfScreens (){
-    Search(),
-    Ordered(),
-    MyCars(),
-    Profile()
-
-}
-
-
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
@@ -52,33 +57,63 @@ fun DefaultPreview() {
     }
 }
 
+fun NavHostController.navigateSingleTopTo(route: String) =
+    this.navigate(route) {
+        // Pop up to the start destination of the graph to
+        // avoid building up a large stack of destinations
+        // on the back stack as users select items
+        popUpTo(
+            this@navigateSingleTopTo.graph.findStartDestination().id
+        ) {
+            saveState = true
+        }
+        // Avoid multiple copies of the same destination when
+        // reselecting the same item
+        launchSingleTop = true
+        // Restore state when reselecting a previously selected item
+        restoreState = true
+    }
+
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun ScaffoldSimple() {
 
-
-    val navController = rememberNavController()
+    val viewModel : SharedViewModel = viewModel()
+    val navController : NavHostController = rememberNavController()
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
 
     Scaffold(
         scaffoldState = scaffoldState,
-        bottomBar = { BottomBar(navController) },
+        bottomBar =
+        {
+            if(viewModel.showBottomBar.value)
+            {
+                BottomBar(navController)
+            }
+        },
         content = {
-            NavHost(navController = navController, startDestination = ListOfScreens.Search.name){
-                composable(route = ListOfScreens.Search.name){
-                    CarsContent()
-                }
-                composable(route = ListOfScreens.Ordered.name){
-                    Text(text = "Ordered")
-                }
-                composable(route = ListOfScreens.MyCars.name){
-                    Text(text = "My Cars")
-                }
-                composable(route = ListOfScreens.Profile.name){
-                    Text(text = "Prodile")
-                }
+                innerPadding ->
+            // Apply the padding globally to the whole BottomNavScreensController
+            Box(modifier = Modifier.padding(innerPadding)) {
 
-
-
+                NavHost(navController = navController,
+                    startDestination = ListOfScreens.Search.name) {
+                    composable(route = ListOfScreens.Search.name) {
+                        CarsContent(viewModel, OnListButton = {navController.navigateSingleTopTo(ListOfScreens.Detail.name)})
+                    }
+                    composable(route = ListOfScreens.Rented.name) {
+                        RentedCarScreen(viewModel)
+                    }
+                    composable(route = ListOfScreens.MyCars.name) {
+                        MyCarsScreen(viewModel)
+                    }
+                    composable(route = ListOfScreens.Profile.name) {
+                        Text(text = "Profile")
+                    }
+                    composable(route = ListOfScreens.Detail.name){
+                        DetailedScreen(viewModel)
+                    }
+                }
             }
         },
 
@@ -89,62 +124,67 @@ fun ScaffoldSimple() {
 
 
 @Composable
-fun BottomBar(navControler: NavHostController) {
+fun BottomBar(navController: NavHostController) {
     val selectedIndex = remember { mutableStateOf(0) }
-    BottomNavigation(elevation = 1000.dp, backgroundColor = MaterialTheme.colors.surface) {
 
-        BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.Search,"")
-        },
-            label = { Text(text = "Cars") },
-            selected = (selectedIndex.value == 0),
-            selectedContentColor = MaterialTheme.colors.primary,
-            unselectedContentColor = Color.Gray,
 
-            onClick = {
-                selectedIndex.value = 0
-                navControler.navigate(ListOfScreens.Search.name)
+        BottomNavigation(elevation = 1000.dp, backgroundColor = MaterialTheme.colors.surface) {
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentRoute = navBackStackEntry?.destination?.route
 
-            })
+            BottomNavigationItem(icon = {
+                Icon(imageVector = Icons.Default.Search, "")
+            },
+                label = { Text(text = "Cars") },
+                selected = (currentRoute == ListOfScreens.Search.name),
+                selectedContentColor = MaterialTheme.colors.primary,
+                unselectedContentColor = Color.Gray,
 
-        BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.Favorite,"")
-        },
-            label = { Text(text = "Ordered") },
-            selected = (selectedIndex.value == 1),
-            selectedContentColor = MaterialTheme.colors.primary,
-            unselectedContentColor = Color.Gray,
+                onClick = {
+                    selectedIndex.value = 0
+                    navController.navigateSingleTopTo(ListOfScreens.Search.name)
 
-            onClick = {
-                selectedIndex.value = 1
-                navControler.navigate(ListOfScreens.Ordered.name)
+                })
 
-            })
+            BottomNavigationItem(icon = {
+                Icon(imageVector = Icons.Default.Favorite, "")
+            },
+                label = { Text(text = "Rented") },
+                selected = (currentRoute == ListOfScreens.Rented.name),
+                selectedContentColor = MaterialTheme.colors.primary,
+                unselectedContentColor = Color.Gray,
 
-        BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.Favorite,"")
-        },
-            label = { Text(text = "My Cars") },
-            selected = (selectedIndex.value == 2),
-            selectedContentColor = MaterialTheme.colors.primary,
-            unselectedContentColor = Color.Gray,
-            onClick = {
-                selectedIndex.value = 2
-                navControler.navigate(ListOfScreens.MyCars.name)
+                onClick = {
+                    selectedIndex.value = 1
+                    navController.navigateSingleTopTo(ListOfScreens.Rented.name)
 
-            })
+                })
 
-        BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.Person,"")
-        },
-            label = { Text(text = "Profile") },
-            selected = (selectedIndex.value == 3),
-            selectedContentColor = MaterialTheme.colors.primary,
-            unselectedContentColor = Color.Gray,
-            onClick = {
-                selectedIndex.value = 3
-                navControler.navigate(ListOfScreens.Profile.name)
-            })
+            BottomNavigationItem(icon = {
+                Icon(imageVector = Icons.Default.Favorite, "")
+            },
+                label = { Text(text = "My Cars") },
+                selected = (currentRoute == ListOfScreens.MyCars.name),
+                selectedContentColor = MaterialTheme.colors.primary,
+                unselectedContentColor = Color.Gray,
+                onClick = {
+                    selectedIndex.value = 2
+                    navController.navigateSingleTopTo(ListOfScreens.MyCars.name)
+
+                })
+
+            BottomNavigationItem(icon = {
+                Icon(imageVector = Icons.Default.Person, "")
+            },
+                label = { Text(text = "Profile") },
+                selected = (currentRoute == ListOfScreens.Profile.name),
+                selectedContentColor = MaterialTheme.colors.primary,
+                unselectedContentColor = Color.Gray,
+                onClick = {
+                    selectedIndex.value = 3
+                    navController.navigateSingleTopTo(ListOfScreens.Profile.name)
+                })
+        }
     }
-}
+
 
