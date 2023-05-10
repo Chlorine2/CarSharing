@@ -1,5 +1,6 @@
 package com.example.carsharing
 
+import PreviewTabbedApp
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -108,7 +109,7 @@ fun ScaffoldSimple() {
                         MyCarsScreen(viewModel)
                     }
                     composable(route = ListOfScreens.Profile.name) {
-                        Text(text = "Profile")
+                        PreviewTabbedApp()
                     }
                     composable(route = ListOfScreens.Detail.name){
                         DetailedScreen(viewModel)
