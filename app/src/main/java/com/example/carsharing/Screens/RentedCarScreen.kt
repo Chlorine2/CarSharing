@@ -35,7 +35,7 @@ fun RentedCarScreen(viewModel: SharedViewModel){
         )
         LazyColumn {
             items(DataSource().dataCars()) { data ->
-                carItem(data = data, viewModel, OnListButton = {})
+                CarItem(data = data, viewModel, OnListButton = {}, false)
 
             }
         }

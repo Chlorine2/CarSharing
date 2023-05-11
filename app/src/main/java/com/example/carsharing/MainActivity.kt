@@ -2,9 +2,11 @@ package com.example.carsharing
 
 import PreviewTabbedApp
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -21,7 +23,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.carsharing.Screens.AddCarScreen
 import com.example.carsharing.Screens.DetailedScreen
+import com.example.carsharing.Screens.RentedCarDetailScreen
 import com.example.carsharing.ui.theme.CarSharingTheme
 import com.example.carsharing.viewModels.SharedViewModel
 
@@ -30,10 +34,13 @@ enum class ListOfScreens (){
     Rented(),
     MyCars(),
     Profile(),
-    Detail()
+    Detail(),
+    AddCar(),
+    RentCar()
 
 }
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -50,6 +57,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
@@ -75,6 +83,7 @@ fun NavHostController.navigateSingleTopTo(route: String) =
         restoreState = true
     }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun ScaffoldSimple() {
@@ -106,13 +115,19 @@ fun ScaffoldSimple() {
                         RentedCarScreen(viewModel)
                     }
                     composable(route = ListOfScreens.MyCars.name) {
-                        MyCarsScreen(viewModel)
+                        MyCarsScreen(viewModel, OnAddCarButton = {navController.navigateSingleTopTo(ListOfScreens.AddCar.name)})
                     }
                     composable(route = ListOfScreens.Profile.name) {
                         PreviewTabbedApp()
                     }
                     composable(route = ListOfScreens.Detail.name){
-                        DetailedScreen(viewModel)
+                        DetailedScreen(viewModel, OnRentCarButton = {navController.navigateSingleTopTo(ListOfScreens.RentCar.name)})
+                    }
+                    composable(route = ListOfScreens.AddCar.name){
+                        AddCarScreen()
+                    }
+                    composable(route = ListOfScreens.RentCar.name){
+                        RentedCarDetailScreen(viewModel)
                     }
                 }
             }

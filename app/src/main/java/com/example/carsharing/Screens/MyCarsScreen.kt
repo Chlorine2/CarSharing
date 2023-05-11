@@ -29,10 +29,10 @@ import com.example.carsharing.models.DataSource
 import com.example.carsharing.viewModels.SharedViewModel
 
 @Composable
-fun MyCarsScreen(viewModel: SharedViewModel){
+fun MyCarsScreen(viewModel: SharedViewModel, OnAddCarButton :() -> Unit){
 
 
-    Scaffold(floatingActionButton = {FloatingActionButtons()} ) {
+    Scaffold(floatingActionButton = {FloatingActionButtons(OnAddCarButton)} ) {
 
 
         Column(verticalArrangement = Arrangement.Center,
@@ -47,7 +47,7 @@ fun MyCarsScreen(viewModel: SharedViewModel){
             )
             LazyColumn {
                 items(DataSource().dataCars()) { data ->
-                    carItem(data = data, viewModel, OnListButton = {})
+                    CarItem(data = data, viewModel, OnListButton = {}, false)
 
                 }
             }
@@ -68,7 +68,7 @@ fun MyCarsScreen(viewModel: SharedViewModel){
 
 @SuppressLint("SuspiciousIndentation")
 @Composable
-fun FloatingActionButtons() {
+fun FloatingActionButtons(OnAddCarButton :() -> Unit) {
 
     val ctx = LocalContext.current
 
@@ -79,7 +79,7 @@ fun FloatingActionButtons() {
             text = { Text(text = "Add car") },
             // on below line we are adding click listener.
             onClick = {
-                Toast.makeText(ctx, "Extended Floating Action Button", Toast.LENGTH_SHORT).show()
+                OnAddCarButton()
             },
             // on below line adding
             // a background color.

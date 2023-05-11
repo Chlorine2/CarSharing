@@ -20,38 +20,74 @@ import com.example.carsharing.viewModels.SharedViewModel
 
 
 @Composable
-fun carItem(data : Car, viewModel: SharedViewModel, OnListButton : () -> Unit){
+fun CarItem(data : Car, viewModel: SharedViewModel, OnListButton : () -> Unit,
+            ItemHorizontal : Boolean){
+
+    if(!ItemHorizontal){
+        Card(elevation = 4.dp, shape = RoundedCornerShape(10),
+            modifier = Modifier.fillMaxWidth().requiredHeight(450.dp).padding(8.dp)
+                .clickable {
+
+                    viewModel.updateListCar(data)
+                    viewModel.updateBottomBar()
+                    OnListButton()
+
+                }) {
+            Column{
+
+                Image(painter = painterResource(id = data.picture), contentDescription = null,
+                    contentScale = ContentScale.Crop, modifier = Modifier.fillMaxWidth()
+                        .height(300.dp).padding(top= 3.dp, bottom = 3.dp)
+                        .clip(RoundedCornerShape(20.dp)))
+
+                Column(modifier = Modifier.padding(start = 10.dp)) {
+                    Text(text = data.vendor + " " + data.model, style = MaterialTheme.typography.h6, fontWeight = FontWeight.Bold
+                    )
+                    Text(text = "$" + data.price + " / hour")
+                    Text(text = "color : " + data.color)
+                    Text(text = "description : " + data.description)
 
 
-Card(elevation = 4.dp, shape = RoundedCornerShape(10),
-    modifier = Modifier.fillMaxWidth().requiredHeight(450.dp).padding(8.dp)
-        .clickable {
+                }
 
-            viewModel.updateListCar(data)
-            viewModel.updateBottomBar()
-            OnListButton()
 
-        }) {
-    Column{
+            }
 
-        Image(painter = painterResource(id = data.picture), contentDescription = null,
-            contentScale = ContentScale.Crop, modifier = Modifier.fillMaxWidth()
-                .height(300.dp).padding(top= 3.dp, bottom = 3.dp)
-                .clip(RoundedCornerShape(20.dp)))
+        }
+    }
+    else{
+        Card(elevation = 4.dp, shape = RoundedCornerShape(70),
+            modifier = Modifier.fillMaxWidth().requiredHeight(160.dp).padding(8.dp)
+                .clickable {
 
-        Column(modifier = Modifier.padding(start = 10.dp)) {
-            Text(text = data.vendor + " " + data.model, style = MaterialTheme.typography.h6, fontWeight = FontWeight.Bold
-            )
-            Text(text = "$" + data.price + " / hour")
-            Text(text = "color : " + data.color)
-            Text(text = "description : " + data.description)
+                    viewModel.updateListCar(data)
+                    viewModel.updateBottomBar()
+                    OnListButton()
 
+                }) {
+            Row(){
+
+                Image(painter = painterResource(id = data.picture), contentDescription = null,
+                    contentScale = ContentScale.Crop, modifier = Modifier.fillMaxHeight()
+                        .width(150.dp).padding(10.dp)
+                        .clip(RoundedCornerShape(100.dp)))
+
+                Column(modifier = Modifier.padding(10.dp)) {
+                    Text(text = data.vendor + " " + data.model, style = MaterialTheme.typography.h6, fontWeight = FontWeight.Bold
+                    )
+                    Text(text = "$" + data.price + " / hour")
+                    Text(text = "color : " + data.color)
+                    Text(text = "description : " + data.description)
+
+
+                }
+
+
+            }
 
         }
 
-
     }
 
-}
 
 }

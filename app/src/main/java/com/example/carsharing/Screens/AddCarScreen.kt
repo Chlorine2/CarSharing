@@ -1,7 +1,8 @@
-package com.example.carsharing
+package com.example.carsharing.Screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.R
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -20,16 +21,19 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.carsharing.models.DataSource
 import com.example.carsharing.ui.theme.CarSharingTheme
-import com.example.carsharing.viewModels.SharedViewModel
 
 @Composable
-fun CarsContent( viewModel: SharedViewModel, OnListButton :() -> Unit){
+fun AddCarScreen(){
 
-    val text = remember{ mutableStateOf("") }
+    val pairList = listOf(Triple("model:", "set model", remember{ mutableStateOf("") }),
+        Triple("color:", "set color", remember{ mutableStateOf("") }),
+        Triple("description:", "set description", remember{ mutableStateOf("") }),
+        Triple("price:", "set price", remember{ mutableStateOf("") }))
+
     var selectedIndex by remember { mutableStateOf(-1) }
+    val text = remember{ mutableStateOf("") }
 
-    Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-
+    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top) {
         Text(text = "Enter parameters of cars:",
             style = MaterialTheme.typography.h3,
             fontSize = 26.sp,
@@ -37,47 +41,50 @@ fun CarsContent( viewModel: SharedViewModel, OnListButton :() -> Unit){
             modifier = Modifier.padding(top = 10.dp, bottom = 10.dp)
         )
 
-        OutlinedTextField(value = text.value,
-            onValueChange = {text.value = it},
-            label = { Text(text = "Search Cars") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 10.dp),
-
-            shape = RoundedCornerShape(100)
-
-        )
-
         LargeDropdownMenu(
-            label = "Choose City",
-            items = listOf("Lviv"),
+            label = "Choose vendor ",
+            items = listOf("BMW", "Mercedes", "Toyota", "Lexus", "Skoda", "Volkswagen"),
             selectedIndex = selectedIndex,
             onItemSelected = { index, _ -> selectedIndex = index },
         )
-
-
-        Text(text = "Cars:",
-            style = MaterialTheme.typography.h3,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .padding(top = 5.dp, bottom = 5.dp, start = 5.dp)
-                .align(alignment = Alignment.Start)
-        )
         LazyColumn{
-            items(DataSource().dataCars()) { data ->
-                CarItem(data = data, viewModel, OnListButton = OnListButton, false)
+            items(pairList) { item ->
+
+
+                Text(text = item.first, style = MaterialTheme.typography.h6,
+                    modifier = Modifier.padding(start = 10.dp),
+                    fontSize = 20.sp, fontWeight = FontWeight.Light
+                )
+
+                OutlinedTextField(value = item.third.value,
+                    onValueChange = {item.third.value = it},
+                    label = { Text(text =  item.second) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp),
+
+                    shape = RoundedCornerShape(100),
+                    singleLine = true
+                )
+
+
             }
+
+
+
         }
+
+        Button(onClick = {}, modifier = Modifier.fillMaxWidth()
+            .height(70.dp).padding(top = 20.dp, start = 10.dp, end = 10.dp ),  shape = RoundedCornerShape(100.dp))
+        {
+                Text(text = "Add Car")
+        }
+
+
+
     }
 
 }
-
-
-
-
-
-
 
 @Composable
 fun <T> LargeDropdownMenu(
@@ -105,16 +112,16 @@ fun <T> LargeDropdownMenu(
         .padding(top = 10.dp)) {
 
         OutlinedTextField(
-            value = items.getOrNull(selectedIndex)?.let { selectedItemToString(it) } ?: "Choose city",
+            value = items.getOrNull(selectedIndex)?.let { selectedItemToString(it) } ?: "Choose Vendor",
             enabled = enabled,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 10.dp),
             trailingIcon = {
                 val icon = if (expanded)
-                    painterResource(R.drawable.ic_baseline_arrow_drop_up_24)
+                    painterResource( com.example.carsharing.R.drawable.ic_baseline_arrow_drop_down_24)
                 else
-                    painterResource(R.drawable.ic_baseline_arrow_drop_down_24)
+                    painterResource(com.example.carsharing.R.drawable.ic_baseline_arrow_drop_down_24)
 
                 Icon(painter = icon,"contentDescription",
                     Modifier.clickable { expanded = !expanded })
