@@ -31,7 +31,7 @@ import com.example.carsharing.R
 import com.example.carsharing.models.Car
 import com.example.carsharing.viewModels.SharedViewModel
 
-@SuppressLint("StateFlowValueCalledInComposition")
+@SuppressLint("StateFlowValueCalledInComposition", "UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun DetailedScreen(viewModel: SharedViewModel, OnRentCarButton :() -> Unit) {
     val bottomBarState = rememberSaveable { (mutableStateOf(true)) }

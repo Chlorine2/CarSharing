@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.carsharing.R
 
-
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun TabbedApp() {
     val selectedTabIndex = remember { mutableStateOf(0) }
@@ -48,7 +48,7 @@ fun TabbedApp() {
                     color = Color.Black // Чорний колір підкреслення
                 )
             },
-            modifier = Modifier.height(48.dp) // Set the height of the TabRow here
+            modifier = Modifier.height(58.dp) // Set the height of the TabRow here
 
         ) {
             Tab(

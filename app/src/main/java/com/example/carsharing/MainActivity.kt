@@ -1,6 +1,7 @@
 package com.example.carsharing
 
 import PreviewTabbedApp
+import RentedCarDetailScreen
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
@@ -25,7 +26,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.carsharing.Screens.AddCarScreen
 import com.example.carsharing.Screens.DetailedScreen
-import com.example.carsharing.Screens.RentedCarDetailScreen
 import com.example.carsharing.ui.theme.CarSharingTheme
 import com.example.carsharing.viewModels.SharedViewModel
 
