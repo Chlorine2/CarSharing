@@ -34,7 +34,7 @@ fun MyCarsScreen(viewModel: SharedViewModel, OnAddCarButton :() -> Unit){
 
 
     Scaffold(floatingActionButton = {FloatingActionButtons(OnAddCarButton)} ) {
-
+            padding ->
 
         Column(verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,

@@ -44,7 +44,7 @@ fun DetailedScreen(viewModel: SharedViewModel, OnRentCarButton :() -> Unit) {
 
 
     Scaffold(floatingActionButton = { FloatingActionButtons(OnRentCarButton) }) {
-
+            padding ->
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

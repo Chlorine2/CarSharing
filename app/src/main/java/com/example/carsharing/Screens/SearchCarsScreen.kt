@@ -25,8 +25,9 @@ import com.example.carsharing.viewModels.SharedViewModel
 @Composable
 fun CarsContent( viewModel: SharedViewModel, OnListButton :() -> Unit){
 
-    val text = remember{ mutableStateOf("") }
-    var selectedIndex by remember { mutableStateOf(-1) }
+    val text by viewModel.searchCar.collectAsState()
+
+    val selectedIndex by viewModel.searchCity.collectAsState()
 
     Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
 
@@ -37,8 +38,8 @@ fun CarsContent( viewModel: SharedViewModel, OnListButton :() -> Unit){
             modifier = Modifier.padding(top = 10.dp, bottom = 10.dp)
         )
 
-        OutlinedTextField(value = text.value,
-            onValueChange = {text.value = it},
+        OutlinedTextField(value = text,
+            onValueChange = {viewModel.onSearchCarChange(it)},
             label = { Text(text = "Search Cars") },
             modifier = Modifier
                 .fillMaxWidth()
@@ -52,7 +53,7 @@ fun CarsContent( viewModel: SharedViewModel, OnListButton :() -> Unit){
             label = "Choose City",
             items = listOf("Lviv"),
             selectedIndex = selectedIndex,
-            onItemSelected = { index, _ -> selectedIndex = index },
+            onItemSelected = { index, _ -> viewModel.onSearchCityChange(index) },
         )
 
 

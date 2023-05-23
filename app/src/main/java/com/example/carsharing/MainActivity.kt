@@ -124,7 +124,7 @@ fun ScaffoldSimple() {
                         DetailedScreen(viewModel, OnRentCarButton = {navController.navigateSingleTopTo(ListOfScreens.RentCar.name)})
                     }
                     composable(route = ListOfScreens.AddCar.name){
-                        AddCarScreen()
+                        AddCarScreen(viewModel)
                     }
                     composable(route = ListOfScreens.RentCar.name){
                         RentedCarDetailScreen(viewModel)

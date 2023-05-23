@@ -1,8 +1,8 @@
 package com.example.carsharing.Screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.R
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -19,19 +19,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.example.carsharing.models.DataSource
 import com.example.carsharing.ui.theme.CarSharingTheme
+import com.example.carsharing.viewModels.SharedViewModel
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun AddCarScreen(){
+fun AddCarScreen(viewModel: SharedViewModel){
 
-    val pairList = listOf(Triple("model:", "set model", remember{ mutableStateOf("") }),
-        Triple("color:", "set color", remember{ mutableStateOf("") }),
-        Triple("description:", "set description", remember{ mutableStateOf("") }),
-        Triple("price:", "set price", remember{ mutableStateOf("") }))
+    val pairList = listOf(Triple("model:", "set model", 0),
+        Triple("color:", "set color", 1),
+        Triple("description:", "set description", 2),
+        Triple("price:", "set price",3))
 
     var selectedIndex by remember { mutableStateOf(-1) }
-    val text = remember{ mutableStateOf("") }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top) {
         Text(text = "Enter parameters of cars:",
@@ -50,14 +50,17 @@ fun AddCarScreen(){
         LazyColumn{
             items(pairList) { item ->
 
+                val currentText = viewModel.setProperties[item.third].collectAsState()
 
                 Text(text = item.first, style = MaterialTheme.typography.h6,
                     modifier = Modifier.padding(start = 10.dp),
                     fontSize = 20.sp, fontWeight = FontWeight.Light
                 )
 
-                OutlinedTextField(value = item.third.value,
-                    onValueChange = {item.third.value = it},
+                OutlinedTextField(value = currentText.value,
+                    onValueChange = {
+                        viewModel.onSetPropertyChange(item.third, it)
+                                    },
                     label = { Text(text =  item.second) },
                     modifier = Modifier
                         .fillMaxWidth()
