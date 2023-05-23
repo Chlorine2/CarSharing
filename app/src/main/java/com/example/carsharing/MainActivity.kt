@@ -26,6 +26,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.carsharing.Screens.AddCarScreen
 import com.example.carsharing.Screens.DetailedScreen
+import com.example.carsharing.models.RegistrationModel
+import com.example.carsharing.netwrok.SharedRepository
 import com.example.carsharing.ui.theme.CarSharingTheme
 import com.example.carsharing.viewModels.SharedViewModel
 

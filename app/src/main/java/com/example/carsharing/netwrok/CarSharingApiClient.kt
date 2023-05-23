@@ -1,15 +1,30 @@
 package com.example.carsharing.netwrok
 
+import com.example.carsharing.models.AuthorizationModel
+import com.example.carsharing.models.Token
+import com.example.carsharing.models.RegistrationModel
 import retrofit2.Response
+import retrofit2.http.Body
 
-class CarSharingApiClient(carSharingApiService: CarSharingApiService) {
+class CarSharingApiClient(private val carSharingApiService: CarSharingApiService) {
+
+    suspend fun postRegister(data: RegistrationModel) : ErrorHandler<Unit>{
+
+       return safeApiCall {carSharingApiService.postRegister(data)}
+
+    }
+    suspend fun postAuthorization(data: AuthorizationModel) : ErrorHandler<Token>{
+
+        return safeApiCall {carSharingApiService.postAuthorization(data)}
+
+    }
 
 
 
-
-    private inline fun <T> safeApiCall(apiCall : () -> Response<T>) : ErrorHandler<T>{
+    private inline fun <T> safeApiCall(apiCall: () -> Response<T>) : ErrorHandler<T>{
         return try{
             ErrorHandler.success(apiCall.invoke())
+
 
         }catch (e : java.lang.Exception){
 
