@@ -1,14 +1,11 @@
 package com.example.carsharing.viewModels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.carsharing.models.AuthorizationModel
 import com.example.carsharing.models.Car
 import com.example.carsharing.models.RegistrationModel
 import com.example.carsharing.netwrok.SharedRepository
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,6 +13,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SharedViewModel : ViewModel() {
+
+    private var _signIn = MutableStateFlow("")
+    val signIn: StateFlow<String> = _signIn.asStateFlow()
+
+    private var _registry = MutableStateFlow("")
+    val registry: StateFlow<String> = _registry.asStateFlow()
 
     private var _car = MutableStateFlow(Car())
     val car : StateFlow<Car> = _car.asStateFlow()
@@ -56,11 +59,21 @@ class SharedViewModel : ViewModel() {
         _searchCar.value = text
     }
 
+
     fun onSearchCityChange(index: Int) {
         _searchCity.value = index
     }
     fun onSetPropertyChange(count : Int, text: String) {
         _setProperties[count].value = text
+    }
+
+
+    fun onSignInChange(text: String){
+        _signIn.value = text
+    }
+
+    fun onRegistryChange(text: String){
+        _registry.value = text
     }
 
 }

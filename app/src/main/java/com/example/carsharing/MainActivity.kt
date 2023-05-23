@@ -26,10 +26,12 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.carsharing.Screens.AddCarScreen
 import com.example.carsharing.Screens.DetailedScreen
-import com.example.carsharing.models.RegistrationModel
-import com.example.carsharing.netwrok.SharedRepository
+import com.example.carsharing.Screens.login.LoginPage
+import com.example.carsharing.Screens.login.RegisterPage
+import com.example.carsharing.Screens.login.ResetPage
 import com.example.carsharing.ui.theme.CarSharingTheme
 import com.example.carsharing.viewModels.SharedViewModel
+
 
 enum class ListOfScreens (){
     Search(),
@@ -52,7 +54,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background,
                 ) {
-                    ScaffoldSimple()
+                    //ScaffoldSimple()
+                    LogIn()
+
                 }
             }
         }
@@ -89,6 +93,7 @@ fun NavHostController.navigateSingleTopTo(route: String) =
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun ScaffoldSimple() {
+
 
     val viewModel : SharedViewModel = viewModel()
     val navController : NavHostController = rememberNavController()
@@ -204,5 +209,18 @@ fun BottomBar(navController: NavHostController) {
                 })
         }
     }
+
+
+@Composable
+fun LogIn(){
+    val viewModel : SharedViewModel = viewModel()
+    val navController = rememberNavController()
+    
+    NavHost(navController = navController, startDestination = "login_page", builder = {
+        composable("login_page", content = {LoginPage(navController = navController)})
+        composable("register_page", content = {RegisterPage( navController = navController)})
+        composable("reset_page", content = {ResetPage(viewModel = viewModel, navController = navController)})
+    })
+}
 
 
