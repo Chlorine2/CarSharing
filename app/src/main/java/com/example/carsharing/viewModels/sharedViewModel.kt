@@ -1,8 +1,5 @@
 package com.example.carsharing.viewModels
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -32,8 +29,16 @@ sealed interface AppUiState {
 
 class SharedViewModel : ViewModel() {
 
+    private var _signIn = MutableStateFlow("")
+    val signIn: StateFlow<String> = _signIn.asStateFlow()
+
+    private var _registry = MutableStateFlow("")
+    val registry: StateFlow<String> = _registry.asStateFlow()
+
+
     private var _car = MutableStateFlow(Cars())
     val car : StateFlow<Cars> = _car.asStateFlow()
+
     var appUiState: AppUiState by mutableStateOf(AppUiState.Loading)
         private set
 
@@ -107,11 +112,21 @@ class SharedViewModel : ViewModel() {
         _searchCar.value = text
     }
 
+
     fun onSearchCityChange(index: Int) {
         _searchCity.value = index
     }
     fun onSetPropertyChange(count : Int, text: String) {
         _setProperties[count].value = text
+    }
+
+
+    fun onSignInChange(text: String){
+        _signIn.value = text
+    }
+
+    fun onRegistryChange(text: String){
+        _registry.value = text
     }
 
 }
