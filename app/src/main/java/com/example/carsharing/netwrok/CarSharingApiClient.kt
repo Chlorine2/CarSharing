@@ -1,6 +1,7 @@
 package com.example.carsharing.netwrok
 
 import com.example.carsharing.models.AuthorizationModel
+import com.example.carsharing.models.Cars
 import com.example.carsharing.models.Token
 import com.example.carsharing.models.RegistrationModel
 import retrofit2.Response
@@ -19,7 +20,15 @@ class CarSharingApiClient(private val carSharingApiService: CarSharingApiService
 
     }
 
+    suspend fun getAllCars(token : String) : ErrorHandler<List<Cars>>{
 
+        return safeApiCall { carSharingApiService.getAllCars(token) }
+    }
+
+    suspend fun getOwnedCars(token : String) : ErrorHandler<List<Cars>>{
+
+        return safeApiCall { carSharingApiService.getOwnedCars(token) }
+    }
 
     private inline fun <T> safeApiCall(apiCall: () -> Response<T>) : ErrorHandler<T>{
         return try{

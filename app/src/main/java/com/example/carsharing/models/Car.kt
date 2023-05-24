@@ -45,30 +45,30 @@ data class User(
 
 class DataSource(){
 
-    fun dataCars(): List<Car> {
+    fun dataCars(): List<Cars> {
 
-        return listOf<Car>(
+        return listOf<Cars>(
 
-            Car(1, R.drawable.image1, "Very cool Car yes", "black" , "Hui", "M22", price = 25),
-            Car(2, R.drawable.image2, "Very cool Car yes", "white" , "BMW", "M22", price = 55),
-            Car(3, R.drawable.image3, "Very cool Car yes", "black" , "Volkswagen", "M22", price = 45),
-            Car(4, R.drawable.image4, "Very cool Car yes", "white" , "BMW", "M22", price = 25),
-            Car(5, R.drawable.image5, "Very cool Car yes", "black" , "BMW", "M22", price = 65),
-            Car(6, R.drawable.image6, "Very cool Car yes", "green" , "Toyota", "M22", price = 90),
-            Car(7, R.drawable.image7, "Very cool Car yes", "black" , "Mercedes", "M22", price = 25),
-            Car(8, R.drawable.image8, "Very cool Car yes", "purple", "Volkswagen", "M22", price = 45),
-            Car(9, R.drawable.image9, "Very cool Car yes", "black" , "Mercedes", "M22", price = 75),
-            Car(10,R.drawable.image10,"Very cool Car yes", "yellow", "Volkswagen", "M22", price = 25),
-            Car(1, R.drawable.image1, "Very cool Car yes", "black" , "Hui", "M22", price = 25),
-            Car(2, R.drawable.image2, "Very cool Car yes", "white" , "BMW", "M22", price = 55),
-            Car(3, R.drawable.image3, "Very cool Car yes", "black" , "Volkswagen", "M22", price = 45),
-            Car(4, R.drawable.image4, "Very cool Car yes", "white" , "BMW", "M22", price = 25),
-            Car(5, R.drawable.image5, "Very cool Car yes", "black" , "BMW", "M22", price = 65),
-            Car(6, R.drawable.image6, "Very cool Car yes", "green" , "Toyota", "M22", price = 90),
-            Car(7, R.drawable.image7, "Very cool Car yes", "black" , "Mercedes", "M22", price = 25),
-            Car(8, R.drawable.image8, "Very cool Car yes", "purple", "Volkswagen", "M22", price = 45),
-            Car(9, R.drawable.image9, "Very cool Car yes", "black" , "Mercedes", "M22", price = 75),
-            Car(10,R.drawable.image10,"Very cool Car yes", "yellow", "Volkswagen", "M22", price = 25),
+            Cars(id = 1, description = "Very cool Car yes", color = "black" ,vendor = "Hui", model =  "M22", price = 25.0),
+            Cars(id = 2, description = "Very cool Car yes", color = "white" ,vendor = "BMW",model = "M22", price = 55.0),
+            Cars(id = 3, description = "Very cool Car yes", color = "black" ,vendor = "Volkswagen",model = "M22", price = 45.0),
+            Cars(id = 4, description = "Very cool Car yes", color = "white" ,vendor = "BMW", model ="M22", price = 25.0),
+            Cars(id = 5, description = "Very cool Car yes", color = "black" ,vendor = "BMW",model = "M22", price = 65.0),
+            Cars(id = 6, description = "Very cool Car yes", color = "green" ,vendor = "Toyota",model = "M22", price = 90.0),
+            Cars(id = 7, description = "Very cool Car yes", color = "black" ,vendor = "Mercedes",model = "M22", price = 25.0),
+            Cars(id = 8, description = "Very cool Car yes", color = "purple",vendor = "Volkswagen",model = "M22", price = 45.0),
+            Cars(id = 9, description = "Very cool Car yes", color = "black" ,vendor = "Mercedes",model = "M22", price = 75.0),
+            Cars(id = 10, description ="Very cool Car yes", color = "yellow",vendor = "Volkswagen",model = "M22", price = 25.0),
+            Cars(id = 1, description = "Very cool Car yes", color = "black" ,vendor = "Hui", model ="M22", price = 25.0),
+            Cars(id = 2, description = "Very cool Car yes", color = "white" ,vendor = "BMW", model ="M22", price = 55.0),
+            Cars(id = 3, description = "Very cool Car yes", color = "black" ,vendor = "Volkswagen",model = "M22", price = 45.0),
+            Cars(id = 4, description = "Very cool Car yes", color = "white" ,vendor = "BMW", model ="M22", price = 25.0),
+            Cars(id = 5, description = "Very cool Car yes", color = "black" ,vendor = "BMW",model = "M22", price = 65.0),
+            Cars(id = 6, description = "Very cool Car yes", color = "green" ,vendor = "Toyota", model ="M22", price = 90.0),
+            Cars(id = 7, description = "Very cool Car yes", color = "black" ,vendor = "Mercedes",model = "M22", price = 25.0),
+            Cars(id = 8, description = "Very cool Car yes", color = "purple",vendor = "Volkswagen",model = "M22", price = 45.0),
+            Cars(id = 9, description = "Very cool Car yes", color = "black" ,vendor = "Mercedes",model = "M22", price = 75.0),
+            Cars(id = 10, description ="Very cool Car yes", color = "yellow",vendor = "Volkswagen",model = "M22", price = 25.0),
 
         )
     }

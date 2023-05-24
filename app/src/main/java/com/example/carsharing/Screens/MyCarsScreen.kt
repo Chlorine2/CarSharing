@@ -47,7 +47,9 @@ fun MyCarsScreen(viewModel: SharedViewModel, OnAddCarButton :() -> Unit){
                 modifier = Modifier.padding(vertical = 10.dp)
             )
             LazyColumn {
-                items(DataSource().dataCars()) { data ->
+                viewModel.getOwnedCars()
+
+                items(viewModel.ownedCars.value) { data ->
                     CarItem(data = data, viewModel, OnListButton = {}, false)
 
                 }

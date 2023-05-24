@@ -18,7 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.example.carsharing.models.DataSource
+import com.example.carsharing.models.Cars
 import com.example.carsharing.ui.theme.CarSharingTheme
 import com.example.carsharing.viewModels.SharedViewModel
 
@@ -66,7 +66,8 @@ fun CarsContent( viewModel: SharedViewModel, OnListButton :() -> Unit){
                 .align(alignment = Alignment.Start)
         )
         LazyColumn{
-            items(DataSource().dataCars()) { data ->
+            items(viewModel.availableCars.value) { data ->
+
                 CarItem(data = data, viewModel, OnListButton = OnListButton, false)
             }
         }

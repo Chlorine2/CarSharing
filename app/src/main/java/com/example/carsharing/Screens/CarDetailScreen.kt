@@ -38,7 +38,6 @@ fun DetailedScreen(viewModel: SharedViewModel, OnRentCarButton :() -> Unit) {
 //
     val car = viewModel.car
 //
-    Log.d("teg", car.value.picture.toString())
     val pairList = listOf(Pair("Location:", car.value.location), Pair("color:", car.value.color),
         Pair("description:", car.value.description))
 
@@ -53,7 +52,7 @@ fun DetailedScreen(viewModel: SharedViewModel, OnRentCarButton :() -> Unit) {
         ) {
 
             Image(
-                painter = painterResource(id = car.value.picture), contentDescription = "1",
+                painter = painterResource(id = R.drawable.image1), contentDescription = "1",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()

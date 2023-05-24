@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -29,6 +30,7 @@ import com.example.carsharing.Screens.DetailedScreen
 import com.example.carsharing.models.RegistrationModel
 import com.example.carsharing.netwrok.SharedRepository
 import com.example.carsharing.ui.theme.CarSharingTheme
+import com.example.carsharing.viewModels.AppUiState
 import com.example.carsharing.viewModels.SharedViewModel
 
 enum class ListOfScreens (){
@@ -41,6 +43,7 @@ enum class ListOfScreens (){
     RentCar()
 
 }
+
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,21 +55,24 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background,
                 ) {
-                    ScaffoldSimple()
+                    val viewModel : SharedViewModel = viewModel()
+
+                    HomeScreen(viewModel = viewModel)
+                    //ScaffoldSimple(viewModel = viewModel)
                 }
             }
         }
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    CarSharingTheme {
-        ScaffoldSimple()
-    }
-}
+//@RequiresApi(Build.VERSION_CODES.O)
+//@Preview(showBackground = true)
+//@Composable
+//fun DefaultPreview() {
+//    CarSharingTheme {
+//        ScaffoldSimple()
+//    }
+//}
 
 fun NavHostController.navigateSingleTopTo(route: String) =
     this.navigate(route) {
@@ -88,9 +94,8 @@ fun NavHostController.navigateSingleTopTo(route: String) =
 @RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun ScaffoldSimple() {
+fun ScaffoldSimple(viewModel: SharedViewModel) {
 
-    val viewModel : SharedViewModel = viewModel()
     val navController : NavHostController = rememberNavController()
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
 
@@ -205,4 +210,15 @@ fun BottomBar(navController: NavHostController) {
         }
     }
 
-
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun HomeScreen(
+    viewModel: SharedViewModel,
+    //retryAction: () -> Unit,
+) {
+    when (viewModel.appUiState) {
+        is AppUiState.Loading -> Text(text = "loading...", fontSize = 30.sp)
+        is AppUiState.Success -> ScaffoldSimple(viewModel = viewModel)
+        is AppUiState.Error -> Text(text = "Error", fontSize = 30.sp)
+    }
+}

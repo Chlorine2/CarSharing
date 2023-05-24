@@ -32,7 +32,10 @@ fun AddCarScreen(viewModel: SharedViewModel){
         Triple("price:", "set price",3))
 
     var selectedIndex by remember { mutableStateOf(-1) }
+    var selectedIndex2 by remember { mutableStateOf(-1) }
+    var selectedIndex3 by remember { mutableStateOf(-1) }
 
+    val stringList = (1920..2023).map { it.toString() }
     Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top) {
         Text(text = "Enter parameters of cars:",
             style = MaterialTheme.typography.h3,
@@ -42,10 +45,24 @@ fun AddCarScreen(viewModel: SharedViewModel){
         )
 
         LargeDropdownMenu(
-            label = "Choose vendor ",
+            label = "Choose vendor",
             items = listOf("BMW", "Mercedes", "Toyota", "Lexus", "Skoda", "Volkswagen"),
             selectedIndex = selectedIndex,
             onItemSelected = { index, _ -> selectedIndex = index },
+        )
+        LargeDropdownMenu(
+            label = "Choose year",
+
+            items = stringList.reversed(),
+            selectedIndex = selectedIndex2,
+            onItemSelected = { index, _ -> selectedIndex2 = index },
+        )
+        LargeDropdownMenu(
+            label = "Choose Location",
+
+            items = listOf("Lviv"),
+            selectedIndex = selectedIndex3,
+            onItemSelected = { index, _ -> selectedIndex3 = index },
         )
         LazyColumn{
             items(pairList) { item ->
@@ -115,7 +132,7 @@ fun <T> LargeDropdownMenu(
         .padding(top = 10.dp)) {
 
         OutlinedTextField(
-            value = items.getOrNull(selectedIndex)?.let { selectedItemToString(it) } ?: "Choose Vendor",
+            value = items.getOrNull(selectedIndex)?.let { selectedItemToString(it) } ?: label,
             enabled = enabled,
             modifier = Modifier
                 .fillMaxWidth()

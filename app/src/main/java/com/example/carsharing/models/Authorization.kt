@@ -13,6 +13,6 @@ data class AuthorizationModel (
 )
 
 data class Token(
-    val token : String
+    val token : String = ""
 )
 
