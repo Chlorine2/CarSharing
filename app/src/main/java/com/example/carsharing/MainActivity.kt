@@ -233,7 +233,7 @@ fun HomeScreen(
 ) {
     when (viewModel.appUiState) {
         is AppUiState.Loading -> Text(text = "loading...", fontSize = 30.sp)
-        is AppUiState.Success -> ScaffoldSimple(viewModel = viewModel)
+        is AppUiState.Success -> LogIn()
         is AppUiState.Error -> Text(text = "Error", fontSize = 30.sp)
     }
 }
