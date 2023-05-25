@@ -38,7 +38,7 @@ import androidx.navigation.NavController
 import com.example.carsharing.viewModels.SharedViewModel
 
 @Composable
-fun ResetPage(viewModel: SharedViewModel, navController: NavController) {
+fun ResetPage(onClickSignUp : () -> Unit = {}) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -76,7 +76,7 @@ fun ResetPage(viewModel: SharedViewModel, navController: NavController) {
 
                 Spacer(modifier = Modifier.padding(8.dp))
 
-                ResetEmailID(viewModel = viewModel)
+                ResetEmailID()
                 Spacer(modifier = Modifier.padding(3.dp))
 
 
@@ -100,10 +100,7 @@ fun ResetPage(viewModel: SharedViewModel, navController: NavController) {
                 Spacer(modifier = Modifier.padding(10.dp))
                 TextButton(onClick = {
 
-                    navController.navigate("register_page"){
-                        popUpTo(navController.graph.startDestinationId)
-                        launchSingleTop = true
-                    }
+                  onClickSignUp()
 
                 }) {
                     Text(
@@ -162,7 +159,7 @@ private fun ButtonReset(
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ResetEmailID(viewModel: SharedViewModel) {
+fun ResetEmailID() {
     val keyboardController = LocalSoftwareKeyboardController.current
     var text by rememberSaveable { mutableStateOf("") }
 

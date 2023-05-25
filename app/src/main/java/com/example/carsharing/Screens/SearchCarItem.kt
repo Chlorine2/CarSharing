@@ -33,7 +33,6 @@ fun CarItem(data : Cars, viewModel: SharedViewModel, OnListButton : () -> Unit,
                 .clickable {
 
                     viewModel.updateListCar(data)
-                    viewModel.updateBottomBar()
                     OnListButton()
 
                 }) {
@@ -72,7 +71,6 @@ fun CarItem(data : Cars, viewModel: SharedViewModel, OnListButton : () -> Unit,
                 .clickable {
 
                     viewModel.updateListCar(data)
-                    viewModel.updateBottomBar()
                     OnListButton()
 
                 }) {

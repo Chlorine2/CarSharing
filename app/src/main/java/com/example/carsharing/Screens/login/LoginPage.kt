@@ -51,10 +51,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.carsharing.R
+import com.example.carsharing.viewModels.SharedViewModel
 
 
 @Composable
-fun LoginPage(navController: NavController){
+fun LoginPage(viewModel: SharedViewModel,
+              onClickRegistration: () -> Unit = {}, onClickReset: () -> Unit = {},
+              onClickLogin: () -> Unit = {},
+){
 
     Box(
         modifier = Modifier
@@ -108,29 +112,31 @@ fun LoginPage(navController: NavController){
                 Spacer(modifier = Modifier.padding(10.dp))
 
                 Button(
-                    backgroundColor = Color(0xFF484BF1), // Set your desired background color here
-                    nameButton = "Login",
-                )
+                    onClick = {
+
+                        viewModel.onChangePassUser()
+                        onClickLogin()
+                    }
+                ){
+                    Text(text = "Login")
+                }
 
 
                 Spacer(Modifier.padding(10.dp))
-                TextButton(onClick = {
-                    navController.navigate("register_page"){
-                        popUpTo(navController.graph.startDestinationId)
-                        launchSingleTop = true
-                    }
-                }) {
+                TextButton(onClick =
+                {
+                    onClickRegistration()
+                }
+                ) {
                     Text(
                         text = "Create An Account",
                         letterSpacing = 1.sp,
                         style = MaterialTheme.typography.h6
                     )
                 }
-                TextButton(onClick = {
-                    navController.navigate("reset_page"){
-                        popUpTo(navController.graph.startDestinationId)
-                        launchSingleTop = true
-                    }
+                TextButton(onClick =
+                {
+                    onClickReset()
                 }) {
                     Text(
                         text = "Reset Password",

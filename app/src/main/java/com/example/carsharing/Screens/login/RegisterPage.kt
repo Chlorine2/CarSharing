@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
 @Composable
-fun RegisterPage(navController: NavController) {
+fun RegisterPage(onClickSignUp: () -> Unit = {}, onClickReset : () -> Unit = {}) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -106,12 +106,9 @@ fun RegisterPage(navController: NavController) {
                 )
 
                 Spacer(modifier = Modifier.padding(10.dp))
-                TextButton(onClick = {
-                    navController.navigate("login_page"){
-                        popUpTo(navController.graph.startDestinationId)
-                        launchSingleTop = true
-                    }
-
+                TextButton(onClick =
+                {
+                    onClickSignUp()
                 }) {
                     Text(
                         text = "Sign In",
@@ -123,13 +120,7 @@ fun RegisterPage(navController: NavController) {
 
                 Spacer(modifier = Modifier.padding(5.dp))
                 TextButton(onClick = {
-
-                    navController.navigate("reset_page"){
-                        popUpTo(navController.graph.startDestinationId)
-                        launchSingleTop = true
-                    }
-
-
+                    onClickReset()
                 }) {
                     Text(
                         text = "Reset Password",

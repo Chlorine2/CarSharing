@@ -30,6 +30,8 @@ import com.example.carsharing.Screens.DetailedScreen
 import com.example.carsharing.Screens.login.LoginPage
 import com.example.carsharing.Screens.login.RegisterPage
 import com.example.carsharing.Screens.login.ResetPage
+import com.example.carsharing.graphs.HomeNavGraph
+import com.example.carsharing.graphs.RootNavigationGraph
 import com.example.carsharing.ui.theme.CarSharingTheme
 import com.example.carsharing.viewModels.AppUiState
 import com.example.carsharing.viewModels.SharedViewModel
@@ -42,7 +44,10 @@ enum class ListOfScreens (){
     Profile(),
     Detail(),
     AddCar(),
-    RentCar()
+    RentCar(),
+    Login(),
+    Registration(),
+    Reset()
 
 }
 class MainActivity : ComponentActivity() {
@@ -59,7 +64,6 @@ class MainActivity : ComponentActivity() {
                     val viewModel : SharedViewModel = viewModel()
 
                     HomeScreen(viewModel = viewModel)
-                    //ScaffoldSimple(viewModel = viewModel)
                 }
             }
         }
@@ -95,49 +99,23 @@ fun NavHostController.navigateSingleTopTo(route: String) =
 @RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun ScaffoldSimple(viewModel: SharedViewModel) {
+fun ScaffoldSimple(viewModel: SharedViewModel, navController : NavHostController = rememberNavController()) {
 
-    val navController : NavHostController = rememberNavController()
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
 
     Scaffold(
         scaffoldState = scaffoldState,
         bottomBar =
         {
-            if(viewModel.showBottomBar.value)
-            {
-                BottomBar(navController)
-            }
+
+            BottomBar(navController, viewModel.passUser.value)
+
         },
         content = {
                 innerPadding ->
             // Apply the padding globally to the whole BottomNavScreensController
             Box(modifier = Modifier.padding(innerPadding)) {
-
-                NavHost(navController = navController,
-                    startDestination = ListOfScreens.Search.name) {
-                    composable(route = ListOfScreens.Search.name) {
-                        CarsContent(viewModel, OnListButton = {navController.navigateSingleTopTo(ListOfScreens.Detail.name)})
-                    }
-                    composable(route = ListOfScreens.Rented.name) {
-                        RentedCarScreen(viewModel)
-                    }
-                    composable(route = ListOfScreens.MyCars.name) {
-                        MyCarsScreen(viewModel, OnAddCarButton = {navController.navigateSingleTopTo(ListOfScreens.AddCar.name)})
-                    }
-                    composable(route = ListOfScreens.Profile.name) {
-                        PreviewTabbedApp()
-                    }
-                    composable(route = ListOfScreens.Detail.name){
-                        DetailedScreen(viewModel, OnRentCarButton = {navController.navigateSingleTopTo(ListOfScreens.RentCar.name)})
-                    }
-                    composable(route = ListOfScreens.AddCar.name){
-                        AddCarScreen(viewModel)
-                    }
-                    composable(route = ListOfScreens.RentCar.name){
-                        RentedCarDetailScreen(viewModel)
-                    }
-                }
+                HomeNavGraph(navController, viewModel = viewModel)
             }
         },
 
@@ -148,11 +126,12 @@ fun ScaffoldSimple(viewModel: SharedViewModel) {
 
 
 @Composable
-fun BottomBar(navController: NavHostController) {
+fun BottomBar(navController: NavHostController, height: Int) {
     val selectedIndex = remember { mutableStateOf(0) }
 
 
-        BottomNavigation(elevation = 1000.dp, backgroundColor = MaterialTheme.colors.surface) {
+        BottomNavigation(elevation = 1000.dp, backgroundColor = MaterialTheme.colors.surface,
+        modifier = Modifier.height(height = height.dp)) {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination?.route
 
@@ -212,19 +191,6 @@ fun BottomBar(navController: NavHostController) {
     }
 
 
-@Composable
-fun LogIn(){
-    val viewModel : SharedViewModel = viewModel()
-    val navController = rememberNavController()
-
-    NavHost(navController = navController, startDestination = "login_page", builder = {
-        composable("login_page", content = {LoginPage(navController = navController)})
-        composable("register_page", content = {RegisterPage( navController = navController)})
-        composable("reset_page", content = {ResetPage(viewModel = viewModel, navController = navController)})
-    })
-}
-
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
@@ -233,7 +199,7 @@ fun HomeScreen(
 ) {
     when (viewModel.appUiState) {
         is AppUiState.Loading -> Text(text = "loading...", fontSize = 30.sp)
-        is AppUiState.Success -> LogIn()
+        is AppUiState.Success -> RootNavigationGraph(navController = rememberNavController(), viewModel = viewModel)
         is AppUiState.Error -> Text(text = "Error", fontSize = 30.sp)
     }
 }

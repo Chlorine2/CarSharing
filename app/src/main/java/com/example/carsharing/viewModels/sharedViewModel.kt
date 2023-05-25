@@ -3,6 +3,7 @@ package com.example.carsharing.viewModels
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -38,15 +39,14 @@ class SharedViewModel : ViewModel() {
     private var _registry = MutableStateFlow("")
     val registry: StateFlow<String> = _registry.asStateFlow()
 
+    private var _passUser = MutableStateFlow(0)
+    val passUser : StateFlow<Int> = _passUser.asStateFlow()
 
     private var _car = MutableStateFlow(Cars())
     val car : StateFlow<Cars> = _car.asStateFlow()
 
     var appUiState: AppUiState by mutableStateOf(AppUiState.Loading)
         private set
-
-    private var _showBottomBar = MutableStateFlow(true)
-    val showBottomBar : StateFlow<Boolean> = _showBottomBar.asStateFlow()
 
     private val _searchCar = MutableStateFlow("")
     val searchCar : StateFlow<String> = _searchCar.asStateFlow()
@@ -105,10 +105,6 @@ class SharedViewModel : ViewModel() {
 
         }
     }
-    fun updateBottomBar(){
-
-        _showBottomBar.value = !_showBottomBar.value
-    }
 
 
     fun onSearchCarChange(text: String) {
@@ -123,7 +119,9 @@ class SharedViewModel : ViewModel() {
         _setProperties[count].value = text
     }
 
-
+    fun onChangePassUser(){
+        _passUser.value = 50
+    }
     fun onSignInChange(text: String){
         _signIn.value = text
     }
