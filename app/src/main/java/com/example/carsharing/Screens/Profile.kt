@@ -1,3 +1,5 @@
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -8,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
@@ -28,14 +29,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.example.carsharing.ListOfScreens
+import com.example.carsharing.MyCarsScreen
 import com.example.carsharing.R
+import com.example.carsharing.RentedCarScreen
+import com.example.carsharing.navigateSingleTopTo
+import com.example.carsharing.viewModels.SharedViewModel
 
-@Preview(showBackground = true, showSystemUi = true)
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun TabbedApp() {
+fun TabbedApp(navController: NavHostController, viewModel: SharedViewModel) {
     val selectedTabIndex = remember { mutableStateOf(0) }
 
     Column {
@@ -63,32 +70,42 @@ fun TabbedApp() {
                 onClick = { selectedTabIndex.value = 1 },
                 modifier = Modifier.padding(horizontal = 16.dp) // Додаткові відступи
             ) {
-                Text("Settings", color = Color.Black, fontSize = 20.sp, fontWeight = FontWeight.Bold) // Чорний колір тексту
+                Text("Rented", color = Color.Black, fontSize = 20.sp, fontWeight = FontWeight.Bold) // Чорний колір тексту
+            }
+            Tab(
+                selected = selectedTabIndex.value == 2,
+                onClick = { selectedTabIndex.value = 2 },
+                modifier = Modifier.padding(horizontal = 16.dp) // Додаткові відступи
+            ) {
+                Text("My Cars", color = Color.Black, fontSize = 20.sp, fontWeight = FontWeight.Bold) // Чорний колір тексту
             }
         }
 
-        LazyColumn {
+
             when (selectedTabIndex.value) {
-                0 -> item {
-                    ProfileZone()
-                    ConfirmProfile()
-                    AboutSection()
-                    TransportSection()
-                }
-                1 -> item {
-                    ProfileSettings()
-                }
+                0 -> AllProfiles()
+                1 -> RentedCarScreen(viewModel)
+                2 -> MyCarsScreen(viewModel, OnAddCarButton = {navController.navigateSingleTopTo(ListOfScreens.AddCar.name)})
             }
-        }
+
     }
 }
 
-@Preview
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun PreviewTabbedApp() {
-    TabbedApp()
+fun PreviewTabbedApp(viewModel: SharedViewModel, navController : NavHostController) {
+    TabbedApp(navController, viewModel = viewModel)
 }
 
+
+
+@Composable
+fun AllProfiles(){
+    ProfileZone()
+    ConfirmProfile()
+    AboutSection()
+}
 @Composable
 fun ProfileZone() {
     Column(
@@ -148,7 +165,8 @@ fun ProfileZone() {
             text = "Змінити фото профілю",
             color = Color.Black,
             style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold),
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
                 .clickable {
                     // Обробка натискання на надпис "Змінити фото профілю"
                     // Виконати дії зміни фото
@@ -162,8 +180,9 @@ fun ProfileZone() {
             text = "Редагувати інформацію про себе",
             color = Color.Black,
             style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold),
-            modifier = Modifier.padding(horizontal = 16.dp)
-            .clickable {
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .clickable {
                     // Обробка натискання на надпис "Редагувати інформацію про себе"
                     // Виконати дії редагування інформації
                 }
@@ -201,11 +220,13 @@ fun ConfirmProfile(){
             text = "Підтвердіть особу",
             color = Color.Black,
             style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold),
-            modifier = Modifier.weight(1f).padding(horizontal = 16.dp)
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 16.dp)
                 .clickable {
-                // Обробка натискання на фото профілю
-                // Виконати дії зміни фото
-            },
+                    // Обробка натискання на фото профілю
+                    // Виконати дії зміни фото
+                },
         )
         Text(
             text = "+",
@@ -225,11 +246,13 @@ fun ConfirmProfile(){
             text = "Підтвердіть email",
             color = Color.Black,
             style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold),
-            modifier = Modifier.weight(1f).padding(horizontal = 16.dp)
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 16.dp)
                 .clickable {
-                // Обробка натискання на фото профілю
-                // Виконати дії зміни фото
-            },
+                    // Обробка натискання на фото профілю
+                    // Виконати дії зміни фото
+                },
         )
         Text(
             text = "+",
@@ -249,11 +272,13 @@ fun ConfirmProfile(){
             text = "Підтвердіть номер",
             color = Color.Black,
             style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold),
-            modifier = Modifier.weight(1f).padding(horizontal = 16.dp)
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 16.dp)
                 .clickable {
-                // Обробка натискання на фото профілю
-                // Виконати дії зміни фото
-            },
+                    // Обробка натискання на фото профілю
+                    // Виконати дії зміни фото
+                },
         )
         Text(
             text = "✓",
@@ -298,7 +323,9 @@ fun AboutSection() {
             text = "Додати інформацію про себе",
             color = Color.Black,
             style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold),
-            modifier = Modifier.weight(1f).padding(horizontal = 16.dp)
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 16.dp)
                 .clickable {
                     // Обробка натискання на рядок "Додати інформацію про себе"
                     // Виконати дії додавання інформації
@@ -322,7 +349,9 @@ fun AboutSection() {
             text = "Додати вподобання",
             color = Color.Black,
             style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold),
-            modifier = Modifier.weight(1f).padding(horizontal = 16.dp)
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 16.dp)
                 .clickable {
                     // Обробка натискання на рядок "Додати вподобання"
                     // Виконати дії додавання вподобань
@@ -367,7 +396,9 @@ fun TransportSection() {
             text = "Додати авто",
             color = Color.Black,
             style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold),
-            modifier = Modifier.weight(1f).padding(horizontal = 16.dp)
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 16.dp)
                 .clickable {
                     // Обробка натискання на рядок "Додати авто"
                     // Виконати дії додавання авто
@@ -387,204 +418,6 @@ fun TransportSection() {
 }
 
 
-@Composable
-fun ProfileSettings() {
-    Spacer(modifier = Modifier.height(16.dp))
 
-    Text(
-        text = "Відгуки",
-        color = Color.Black,
-        style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-        modifier = Modifier.padding(horizontal = 16.dp)
-            .clickable {
-
-            }
-    )
-
-    Spacer(modifier = Modifier.height(20.dp))
-
-    Divider(
-        color = Color.LightGray,
-        thickness = 1.dp,
-        modifier = Modifier.padding(horizontal = 16.dp)
-    )
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    Text(
-        text = "Сповіщення",
-        color = Color.Black,
-        style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-        modifier = Modifier.padding(horizontal = 16.dp)
-            .clickable {
-
-            }
-    )
-
-    Spacer(modifier = Modifier.height(20.dp))
-
-
-    Text(
-        text = "Змінити пароль",
-        color = Color.Black,
-        style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-        modifier = Modifier.padding(horizontal = 16.dp)
-            .clickable {
-
-            }
-    )
-
-    Spacer(modifier = Modifier.height(20.dp))
-
-
-    Text(
-        text = "Поштова адреса",
-        color = Color.Black,
-        style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-        modifier = Modifier.padding(horizontal = 16.dp)
-            .clickable {
-
-            }
-    )
-
-    Spacer(modifier = Modifier.height(20.dp))
-
-    Divider(
-        color = Color.LightGray,
-        thickness = 1.dp,
-        modifier = Modifier.padding(horizontal = 16.dp)
-    )
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    Text(
-        text = "Платежі",
-        color = Color.Black,
-        style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-        modifier = Modifier.padding(horizontal = 16.dp)
-            .clickable {
-
-            }
-    )
-
-    Spacer(modifier = Modifier.height(20.dp))
-
-    Text(
-        text = "Способи отримання оплати",
-        color = Color.Black,
-        style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-        modifier = Modifier.padding(horizontal = 16.dp)
-            .clickable {
-
-            }
-    )
-
-    Spacer(modifier = Modifier.height(20.dp))
-
-
-    Text(
-        text = "Платежі та відшкодування",
-        color = Color.Black,
-        style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-        modifier = Modifier.padding(horizontal = 16.dp)
-            .clickable {
-
-            }
-    )
-
-    Spacer(modifier = Modifier.height(20.dp))
-
-    Divider(
-        color = Color.LightGray,
-        thickness = 1.dp,
-        modifier = Modifier.padding(horizontal = 16.dp)
-    )
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    Text(
-        text = "Спеціальні пропозиції",
-        color = Color.Black,
-        style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-        modifier = Modifier.padding(horizontal = 16.dp)
-            .clickable {
-
-            }
-    )
-
-    Spacer(modifier = Modifier.height(20.dp))
-
-    Divider(
-        color = Color.LightGray,
-        thickness = 1.dp,
-        modifier = Modifier.padding(horizontal = 16.dp)
-    )
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    Text(
-        text = "Допомога",
-        color = Color.Black,
-        style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-        modifier = Modifier.padding(horizontal = 16.dp)
-            .clickable {
-
-            }
-    )
-
-    Spacer(modifier = Modifier.height(20.dp))
-
-
-    Text(
-        text = "Умови користування",
-        color = Color.Black,
-        style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-        modifier = Modifier.padding(horizontal = 16.dp)
-            .clickable {
-
-            }
-    )
-    Spacer(modifier = Modifier.height(20.dp))
-
-    Text(
-        text = "Захист даних",
-        color = Color.Black,
-        style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-        modifier = Modifier.padding(horizontal = 16.dp)
-            .clickable {
-
-            }
-    )
-    Spacer(modifier = Modifier.height(20.dp))
-
-    Text(
-        text = "Ліцензії",
-        color = Color.Black,
-        style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-        modifier = Modifier.padding(horizontal = 16.dp)
-            .clickable {
-
-            }
-    )
-
-    Spacer(modifier = Modifier.height(20.dp))
-
-    Divider(
-        color = Color.LightGray,
-        thickness = 1.dp,
-        modifier = Modifier.padding(horizontal = 16.dp)
-    )
-    Spacer(modifier = Modifier.height(20.dp))
-
-    Text(
-        text = "Вийти",
-        color = Color.Blue,
-        style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-        modifier = Modifier.padding(horizontal = 16.dp)
-            .clickable {
-
-            }
-    )
-}
 
 

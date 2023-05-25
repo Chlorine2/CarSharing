@@ -37,7 +37,7 @@ fun HomeNavGraph(navController: NavHostController, viewModel : SharedViewModel) 
                 MyCarsScreen(viewModel, OnAddCarButton = {navController.navigateSingleTopTo(ListOfScreens.AddCar.name)})
             }
             composable(route = ListOfScreens.Profile.name) {
-                PreviewTabbedApp()
+                PreviewTabbedApp(viewModel, navController)
             }
             composable(route = ListOfScreens.Detail.name){
                 DetailedScreen(viewModel, OnRentCarButton = {navController.navigateSingleTopTo(ListOfScreens.RentCar.name)})
