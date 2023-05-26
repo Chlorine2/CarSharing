@@ -1,14 +1,20 @@
 package com.example.carsharing.Screens
 
 import android.annotation.SuppressLint
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.ExtendedFloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
@@ -22,13 +28,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.carsharing.ListOfScreens
 import com.example.carsharing.R
-import com.example.carsharing.models.Car
 import com.example.carsharing.viewModels.SharedViewModel
 
 @SuppressLint("StateFlowValueCalledInComposition", "UnusedMaterialScaffoldPaddingParameter")
@@ -75,13 +77,13 @@ fun DetailedScreen(viewModel: SharedViewModel, OnRentCarButton :() -> Unit) {
                     fontSize = 25.sp
                 )
 
-                Text(
-                    text = "$${car.value.price} / hour", style = MaterialTheme.typography.h6,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(start = 10.dp),
-                    fontSize = 28.sp, color = Color(0xFF25951B)
-                )
+                //Text(
+                //    text = "$${car.value.price} / hour", style = MaterialTheme.typography.h6,
+                //    modifier = Modifier
+                //        .align(Alignment.CenterHorizontally)
+                //        .padding(start = 10.dp),
+                //    fontSize = 28.sp, color = Color(0xFF25951B)
+                //)
                 SText(text = "location:")
                 BText(text = "Lviv")
                 SText(text = "color:")
@@ -111,7 +113,6 @@ fun SText(text : String){
     )
 }
 
-@SuppressLint("SuspiciousIndentation")
 @Composable
 fun FloatingActionButtons(OnRentCarButton :() -> Unit) {
 

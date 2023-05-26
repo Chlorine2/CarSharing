@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,6 +16,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.Checkbox
+import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalContentColor
@@ -40,11 +43,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.example.carsharing.R
 import com.example.carsharing.ui.theme.CarSharingTheme
 import com.example.carsharing.viewModels.SharedViewModel
 
 @Composable
-fun AddCarScreen(viewModel: SharedViewModel) {
+fun AddRequestScreen(viewModel: SharedViewModel) {
     val pairList = listOf(
         Triple("model:", "set model", 0),
         Triple("color:", "set color", 1),
@@ -54,6 +58,10 @@ fun AddCarScreen(viewModel: SharedViewModel) {
     var selectedIndex1 by remember { mutableStateOf(-1) }
     var selectedIndex2 by remember { mutableStateOf(-1) }
     var selectedIndex3 by remember { mutableStateOf(-1) }
+    var selectedIndex4 by remember { mutableStateOf(-1) }
+
+    var isDeliveryChecked by remember { mutableStateOf(false) }
+
 
     val stringList = (1920..2023).map { it.toString() }
 
@@ -66,25 +74,31 @@ fun AddCarScreen(viewModel: SharedViewModel) {
             modifier = Modifier.padding(top = 10.dp, bottom = 10.dp)
         )
 
-        LargeDropdownMenu(
+        LargeDropdownMenuRequest(
             label = "Choose vendor",
             items = listOf("BMW", "Mercedes", "Toyota", "Lexus", "Skoda", "Volkswagen"),
             selectedIndex = selectedIndex1,
             onItemSelected = { index, _ -> selectedIndex1 = index },
         )
 
-        LargeDropdownMenu(
+        LargeDropdownMenuRequest(
             label = "Choose year",
             items = stringList.reversed(),
             selectedIndex = selectedIndex2,
             onItemSelected = { index, _ -> selectedIndex2 = index },
         )
 
-        LargeDropdownMenu(
+        LargeDropdownMenuRequest(
             label = "Choose Location",
             items = listOf("Lviv"),
             selectedIndex = selectedIndex3,
             onItemSelected = { index, _ -> selectedIndex3 = index },
+        )
+
+        LargeDropdownMenuRequest(
+            label = "Choose body type",
+            items = listOf("Sedan", "SUV", "Hatchback", "Coupe", "MUV", "Van", "Pickup truck", "Crossover", "Station wagon", "Truck"),
+            onItemSelected = {index, _ -> selectedIndex4 = index}
         )
 
         LazyColumn {
@@ -112,12 +126,27 @@ fun AddCarScreen(viewModel: SharedViewModel) {
             }
         }
 
+
+        Row(modifier = Modifier.padding(start = 10.dp)) {
+            Text(
+                text = "Do you need delivery?",
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.padding(top = 10.dp),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal
+            )
+            Checkbox(
+                checked = isDeliveryChecked,
+                onCheckedChange = { isChecked -> isDeliveryChecked = isChecked },
+                colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colors.primary)
+            )
+        }
         Button(
             onClick = {},
             modifier = Modifier
                 .fillMaxWidth()
-                .height(70.dp)
-                .padding(top = 20.dp, start = 10.dp, end = 10.dp),
+                .height(50.dp)
+                .padding(start = 10.dp, end = 10.dp),
             shape = RoundedCornerShape(100.dp)
         ) {
             Text(text = "Add Car")
@@ -127,7 +156,7 @@ fun AddCarScreen(viewModel: SharedViewModel) {
 
 
 @Composable
-fun <T> LargeDropdownMenu(
+fun <T> LargeDropdownMenuRequest(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: String,
@@ -137,7 +166,7 @@ fun <T> LargeDropdownMenu(
     onItemSelected: (index: Int, item: T) -> Unit,
     selectedItemToString: (T) -> String = { it.toString() },
     drawItem: @Composable (T, Boolean, Boolean, () -> Unit) -> Unit = { item, selected, itemEnabled, onClick ->
-        LargeDropdownMenuItem(
+        LargeDropdownMenuItemRequest(
             text = item.toString(),
             selected = selected,
             enabled = itemEnabled,
@@ -159,9 +188,9 @@ fun <T> LargeDropdownMenu(
                 .padding(horizontal = 10.dp),
             trailingIcon = {
                 val icon = if (expanded)
-                    painterResource( com.example.carsharing.R.drawable.ic_baseline_arrow_drop_down_24)
+                    painterResource( R.drawable.ic_baseline_arrow_drop_down_24)
                 else
-                    painterResource(com.example.carsharing.R.drawable.ic_baseline_arrow_drop_down_24)
+                    painterResource(R.drawable.ic_baseline_arrow_drop_down_24)
 
                 Icon(painter = icon,"contentDescription",
                     Modifier.clickable { expanded = !expanded })
@@ -235,7 +264,7 @@ fun <T> LargeDropdownMenu(
 }
 
 @Composable
-fun LargeDropdownMenuItem(
+fun LargeDropdownMenuItemRequest(
     text: String,
     selected: Boolean,
     enabled: Boolean,
@@ -247,7 +276,7 @@ fun LargeDropdownMenuItem(
         else -> MaterialTheme.colors.onSurface.copy(alpha = 1f)
     }
 
-    CompositionLocalProvider(LocalContentColor provides contentColor) {
+    CompositionLocalProvider(LocalContentColor provides  contentColor) {
         Box(modifier = Modifier
             .clickable(enabled) { onClick() }
             .fillMaxWidth()

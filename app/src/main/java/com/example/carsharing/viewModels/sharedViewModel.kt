@@ -3,19 +3,12 @@ package com.example.carsharing.viewModels
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.carsharing.R
 import com.example.carsharing.models.AuthorizationModel
-import com.example.carsharing.models.Car
 import com.example.carsharing.models.Cars
-import com.example.carsharing.models.RegistrationModel
 import com.example.carsharing.models.Token
 import com.example.carsharing.netwrok.SharedRepository
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -63,13 +56,17 @@ class SharedViewModel : ViewModel() {
     private val _ownedCars = MutableStateFlow<List<Cars>>(emptyList())
     val ownedCars : StateFlow<List<Cars>> = _ownedCars.asStateFlow()
 
+    private val _requestCar = MutableStateFlow<List<Cars>>(emptyList())
+    val requestCar: StateFlow<List<Cars>> = _requestCar.asStateFlow()
+
+
     private val _token = MutableStateFlow(Token())
     val token : StateFlow<Token> = _token.asStateFlow()
 
     fun updateListCar(temp : Cars){
         _car.update { car -> car.copy(id = temp.id,
             description = temp.description, color = temp.color,
-            model = temp.model, price = temp.price, vendor = temp.vendor) }
+            model = temp.model, vendor = temp.vendor) }
     }
     init {
         connectInternet()
@@ -103,6 +100,14 @@ class SharedViewModel : ViewModel() {
                 _ownedCars.value = SharedRepository().getOwnedCars("Bearer ${token.value.token}")!!
             }
 
+        }
+    }
+
+    fun getRequestCars(){
+        viewModelScope.launch {
+            if(token != null) {
+                _requestCar.value = SharedRepository().getRequestCars("Bearer ${token.value.token}")!!
+            }
         }
     }
 

@@ -1,7 +1,5 @@
 package com.example.carsharing
 
-import PreviewTabbedApp
-import RentedCarDetailScreen
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
@@ -15,21 +13,13 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.carsharing.Screens.AddCarScreen
-import com.example.carsharing.Screens.DetailedScreen
-import com.example.carsharing.Screens.login.LoginPage
-import com.example.carsharing.Screens.login.RegisterPage
-import com.example.carsharing.Screens.login.ResetPage
 import com.example.carsharing.graphs.HomeNavGraph
 import com.example.carsharing.graphs.RootNavigationGraph
 import com.example.carsharing.ui.theme.CarSharingTheme
@@ -47,7 +37,9 @@ enum class ListOfScreens (){
     RentCar(),
     Login(),
     Registration(),
-    Reset()
+    Reset(),
+    AddRequest(),
+    Request()
 
 }
 class MainActivity : ComponentActivity() {
@@ -152,21 +144,21 @@ fun BottomBar(navController: NavHostController, height: Int) {
             BottomNavigationItem(icon = {
                 Icon(imageVector = Icons.Default.Favorite, "")
             },
-                label = { Text(text = "Rented") },
-                selected = (currentRoute == ListOfScreens.Rented.name),
+                label = { Text(text = "Requests") },
+                selected = (currentRoute == ListOfScreens.Request.name),
                 selectedContentColor = MaterialTheme.colors.primary,
                 unselectedContentColor = Color.Gray,
 
                 onClick = {
                     selectedIndex.value = 1
-                    navController.navigateSingleTopTo(ListOfScreens.Rented.name)
+                    navController.navigateSingleTopTo(ListOfScreens.Request.name)
 
                 })
 
             BottomNavigationItem(icon = {
                 Icon(imageVector = Icons.Default.Favorite, "")
             },
-                label = { Text(text = "My Cars") },
+                label = { Text(text = "Delivery") },
                 selected = (currentRoute == ListOfScreens.MyCars.name),
                 selectedContentColor = MaterialTheme.colors.primary,
                 unselectedContentColor = Color.Gray,

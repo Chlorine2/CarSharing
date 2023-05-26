@@ -16,6 +16,8 @@ interface InterfaceSharedRepository{
 
     suspend fun getOwnedCars(token : String) : List<Cars>?
 
+    suspend fun getRequestCars(token: String) : List<Cars>?
+
 }
 
 class SharedRepository : InterfaceSharedRepository {
@@ -59,6 +61,21 @@ class SharedRepository : InterfaceSharedRepository {
     override suspend fun getOwnedCars(token: String): List<Cars>? {
 
         val request = apiClient.getOwnedCars(token)
+        Log.d("teg", request.toString())
+        if(request.failed){
+            return null
+        }
+
+        if(!request.isSuccessful){
+            return null
+
+        }
+        return request.body
+    }
+
+    override suspend fun getRequestCars(token: String): List<Cars>? {
+
+        val request = apiClient.getRequestCars(token)
         Log.d("teg", request.toString())
         if(request.failed){
             return null

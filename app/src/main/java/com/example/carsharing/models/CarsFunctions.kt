@@ -8,7 +8,6 @@ data class Cars(
     val location: String = "",
     val model: String = "",
     val owner: Owner = Owner(),
-    val price: Double = 0.0,
     val renter: Owner = Owner(),
     val vendor: String = "",
     val year: Int = 0,

@@ -1,8 +1,6 @@
 package com.example.carsharing.models
 
 import android.os.Parcelable
-import com.example.carsharing.R
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -49,26 +47,26 @@ class DataSource(){
 
         return listOf<Cars>(
 
-            Cars(id = 1, description = "Very cool Car yes", color = "black" ,vendor = "Hui", model =  "M22", price = 25.0),
-            Cars(id = 2, description = "Very cool Car yes", color = "white" ,vendor = "BMW",model = "M22", price = 55.0),
-            Cars(id = 3, description = "Very cool Car yes", color = "black" ,vendor = "Volkswagen",model = "M22", price = 45.0),
-            Cars(id = 4, description = "Very cool Car yes", color = "white" ,vendor = "BMW", model ="M22", price = 25.0),
-            Cars(id = 5, description = "Very cool Car yes", color = "black" ,vendor = "BMW",model = "M22", price = 65.0),
-            Cars(id = 6, description = "Very cool Car yes", color = "green" ,vendor = "Toyota",model = "M22", price = 90.0),
-            Cars(id = 7, description = "Very cool Car yes", color = "black" ,vendor = "Mercedes",model = "M22", price = 25.0),
-            Cars(id = 8, description = "Very cool Car yes", color = "purple",vendor = "Volkswagen",model = "M22", price = 45.0),
-            Cars(id = 9, description = "Very cool Car yes", color = "black" ,vendor = "Mercedes",model = "M22", price = 75.0),
-            Cars(id = 10, description ="Very cool Car yes", color = "yellow",vendor = "Volkswagen",model = "M22", price = 25.0),
-            Cars(id = 1, description = "Very cool Car yes", color = "black" ,vendor = "Hui", model ="M22", price = 25.0),
-            Cars(id = 2, description = "Very cool Car yes", color = "white" ,vendor = "BMW", model ="M22", price = 55.0),
-            Cars(id = 3, description = "Very cool Car yes", color = "black" ,vendor = "Volkswagen",model = "M22", price = 45.0),
-            Cars(id = 4, description = "Very cool Car yes", color = "white" ,vendor = "BMW", model ="M22", price = 25.0),
-            Cars(id = 5, description = "Very cool Car yes", color = "black" ,vendor = "BMW",model = "M22", price = 65.0),
-            Cars(id = 6, description = "Very cool Car yes", color = "green" ,vendor = "Toyota", model ="M22", price = 90.0),
-            Cars(id = 7, description = "Very cool Car yes", color = "black" ,vendor = "Mercedes",model = "M22", price = 25.0),
-            Cars(id = 8, description = "Very cool Car yes", color = "purple",vendor = "Volkswagen",model = "M22", price = 45.0),
-            Cars(id = 9, description = "Very cool Car yes", color = "black" ,vendor = "Mercedes",model = "M22", price = 75.0),
-            Cars(id = 10, description ="Very cool Car yes", color = "yellow",vendor = "Volkswagen",model = "M22", price = 25.0),
+            Cars(id = 1, description = "Very cool Car yes", color = "black" ,vendor = "Hui", model =  "M22"),
+            Cars(id = 2, description = "Very cool Car yes", color = "white" ,vendor = "BMW",model = "M22"),
+            Cars(id = 3, description = "Very cool Car yes", color = "black" ,vendor = "Volkswagen",model = "M22"),
+            Cars(id = 4, description = "Very cool Car yes", color = "white" ,vendor = "BMW", model ="M22"),
+            Cars(id = 5, description = "Very cool Car yes", color = "black" ,vendor = "BMW",model = "M22"),
+            Cars(id = 6, description = "Very cool Car yes", color = "green" ,vendor = "Toyota",model = "M22"),
+            Cars(id = 7, description = "Very cool Car yes", color = "black" ,vendor = "Mercedes",model = "M22"),
+            Cars(id = 8, description = "Very cool Car yes", color = "purple",vendor = "Volkswagen",model = "M22"),
+            Cars(id = 9, description = "Very cool Car yes", color = "black" ,vendor = "Mercedes",model = "M22"),
+            Cars(id = 10, description ="Very cool Car yes", color = "yellow",vendor = "Volkswagen",model = "M22"),
+            Cars(id = 1, description = "Very cool Car yes", color = "black" ,vendor = "Hui", model ="M22"),
+            Cars(id = 2, description = "Very cool Car yes", color = "white" ,vendor = "BMW", model ="M22"),
+            Cars(id = 3, description = "Very cool Car yes", color = "black" ,vendor = "Volkswagen",model = "M22"),
+            Cars(id = 4, description = "Very cool Car yes", color = "white" ,vendor = "BMW", model ="M22"),
+            Cars(id = 5, description = "Very cool Car yes", color = "black" ,vendor = "BMW",model = "M22"),
+            Cars(id = 6, description = "Very cool Car yes", color = "green" ,vendor = "Toyota", model ="M22"),
+            Cars(id = 7, description = "Very cool Car yes", color = "black" ,vendor = "Mercedes",model = "M22"),
+            Cars(id = 8, description = "Very cool Car yes", color = "purple",vendor = "Volkswagen",model = "M22"),
+            Cars(id = 9, description = "Very cool Car yes", color = "black" ,vendor = "Mercedes",model = "M22"),
+            Cars(id = 10, description ="Very cool Car yes", color = "yellow",vendor = "Volkswagen",model = "M22"),
 
         )
     }

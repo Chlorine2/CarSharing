@@ -13,7 +13,9 @@ import com.example.carsharing.ListOfScreens
 import com.example.carsharing.MyCarsScreen
 import com.example.carsharing.RentedCarScreen
 import com.example.carsharing.Screens.AddCarScreen
+import com.example.carsharing.Screens.AddRequestScreen
 import com.example.carsharing.Screens.DetailedScreen
+import com.example.carsharing.Screens.VolunteerRequestCarScreen
 import com.example.carsharing.navigateSingleTopTo
 import com.example.carsharing.viewModels.SharedViewModel
 
@@ -29,6 +31,9 @@ fun HomeNavGraph(navController: NavHostController, viewModel : SharedViewModel) 
 
             composable(route = ListOfScreens.Search.name) {
                 CarsContent(viewModel, OnListButton = {navController.navigateSingleTopTo(ListOfScreens.Detail.name)})
+            }
+            composable(route = ListOfScreens.Request.name) {
+                VolunteerRequestCarScreen(viewModel, OnAddRequestButton = {navController.navigateSingleTopTo(ListOfScreens.AddRequest.name)})
             }
             composable(route = ListOfScreens.Rented.name) {
                 RentedCarScreen(viewModel)
@@ -47,6 +52,9 @@ fun HomeNavGraph(navController: NavHostController, viewModel : SharedViewModel) 
             }
             composable(route = ListOfScreens.RentCar.name){
                 RentedCarDetailScreen(viewModel)
+            }
+            composable(route = ListOfScreens.AddRequest.name){
+                AddRequestScreen(viewModel)
             }
 
     }

@@ -2,10 +2,9 @@ package com.example.carsharing.netwrok
 
 import com.example.carsharing.models.AuthorizationModel
 import com.example.carsharing.models.Cars
-import com.example.carsharing.models.Token
 import com.example.carsharing.models.RegistrationModel
+import com.example.carsharing.models.Token
 import retrofit2.Response
-import retrofit2.http.Body
 
 class CarSharingApiClient(private val carSharingApiService: CarSharingApiService) {
 
@@ -26,6 +25,11 @@ class CarSharingApiClient(private val carSharingApiService: CarSharingApiService
     }
 
     suspend fun getOwnedCars(token : String) : ErrorHandler<List<Cars>>{
+
+        return safeApiCall { carSharingApiService.getOwnedCars(token) }
+    }
+
+    suspend fun getRequestCars(token : String) : ErrorHandler<List<Cars>>{
 
         return safeApiCall { carSharingApiService.getOwnedCars(token) }
     }

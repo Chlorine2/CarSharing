@@ -1,4 +1,6 @@
+import android.content.Context
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,13 +13,19 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Button
+import androidx.compose.material.Surface
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.TabRowDefaults.Divider
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -25,12 +33,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.core.text.isDigitsOnly
 import androidx.navigation.NavHostController
 import com.example.carsharing.ListOfScreens
 import com.example.carsharing.MyCarsScreen
@@ -142,7 +154,7 @@ fun ProfileZone() {
 
             Image(
                 painter = painterResource(R.drawable.avatar),
-                contentDescription = "Фото профілю",
+                contentDescription = "Profile photo",
                 modifier = Modifier
                     .size(100.dp)
                     .clip(CircleShape)
@@ -162,7 +174,7 @@ fun ProfileZone() {
 
         // Надпис "Змінити фото профілю"
         Text(
-            text = "Змінити фото профілю",
+            text = "Change profile photo",
             color = Color.Black,
             style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold),
             modifier = Modifier
@@ -177,7 +189,7 @@ fun ProfileZone() {
 
         // Надпис "Редагувати інформацію про себе"
         Text(
-            text = "Редагувати інформацію про себе",
+            text = "Redact information about you",
             color = Color.Black,
             style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold),
             modifier = Modifier
@@ -201,9 +213,12 @@ fun ProfileZone() {
 
 @Composable
 fun ConfirmProfile(){
-    // Заголовок "Підтвердіть свій профіль"
+
+
+    val showDialog = remember { mutableStateOf(false) }
+
     Text(
-        text = "Підтвердіть свій профіль",
+        text = "Confirm your profile",
         color = Color.Black,
         style = TextStyle(fontSize = 22.sp, fontWeight = FontWeight.Bold),
         modifier = Modifier.padding(horizontal = 30.dp)
@@ -211,31 +226,6 @@ fun ConfirmProfile(){
 
     Spacer(modifier = Modifier.height(18.dp))
 
-// Рядок "Підтвердіть особу" з позначкою "плюс"
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(horizontal = 16.dp)
-    ) {
-        Text(
-            text = "Підтвердіть особу",
-            color = Color.Black,
-            style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold),
-            modifier = Modifier
-                .weight(1f)
-                .padding(horizontal = 16.dp)
-                .clickable {
-                    // Обробка натискання на фото профілю
-                    // Виконати дії зміни фото
-                },
-        )
-        Text(
-            text = "+",
-            color = Color.Black,
-            style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold)
-        )
-    }
-
-    Spacer(modifier = Modifier.height(18.dp))
 
 // Рядок "Підтвердіть email" з позначкою "плюс"
     Row(
@@ -243,7 +233,7 @@ fun ConfirmProfile(){
         modifier = Modifier.padding(horizontal = 16.dp)
     ) {
         Text(
-            text = "Підтвердіть email",
+            text = "Confirm e-mail",
             color = Color.Black,
             style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold),
             modifier = Modifier
@@ -269,7 +259,7 @@ fun ConfirmProfile(){
         modifier = Modifier.padding(horizontal = 16.dp)
     ) {
         Text(
-            text = "Підтвердіть номер",
+            text = "Confirm number",
             color = Color.Black,
             style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold),
             modifier = Modifier
@@ -287,7 +277,18 @@ fun ConfirmProfile(){
         )
     }
 
-    Spacer(modifier = Modifier.height(25.dp))
+    Spacer(modifier = Modifier.height(3.dp))
+
+    val dismissAlertDialog: () -> Unit = {
+        showDialog.value = false
+    }
+
+    VolunteerStatusConfirmationButton(
+        showDialog = showDialog,
+        dismissAlertDialog = dismissAlertDialog
+    )
+
+    Spacer(modifier = Modifier.height(8.dp))
 
 
     Divider(
@@ -306,7 +307,7 @@ fun AboutSection() {
 
     // Заголовок "Про себе"
     Text(
-        text = "Про себе",
+        text = "About you",
         color = Color.Black,
         style = TextStyle(fontSize = 22.sp, fontWeight = FontWeight.Bold),
         modifier = Modifier.padding(horizontal = 30.dp)
@@ -320,7 +321,7 @@ fun AboutSection() {
         modifier = Modifier.padding(horizontal = 16.dp)
     ) {
         Text(
-            text = "Додати інформацію про себе",
+            text = "Add information about you",
             color = Color.Black,
             style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold),
             modifier = Modifier
@@ -346,7 +347,7 @@ fun AboutSection() {
         modifier = Modifier.padding(horizontal = 16.dp)
     ) {
         Text(
-            text = "Додати вподобання",
+            text = "Add preferences",
             color = Color.Black,
             style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold),
             modifier = Modifier
@@ -365,13 +366,6 @@ fun AboutSection() {
     }
 
     Spacer(modifier = Modifier.height(18.dp))
-
-
-    Divider(
-        color = Color.LightGray,
-        thickness = 1.dp,
-        modifier = Modifier.padding(horizontal = 16.dp)
-    )
 }
 
 @Composable
@@ -417,6 +411,90 @@ fun TransportSection() {
 
 }
 
+@Composable
+fun VolunteerStatusConfirmationButton(
+    showDialog: MutableState<Boolean>,
+    dismissAlertDialog: () -> Unit
+) {
+    val codeInput = remember { mutableStateOf("") }
+    val isCodeConfirmed = remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    Button(
+        onClick = {
+            showDialog.value = true
+        },
+        enabled = !isCodeConfirmed.value,
+        modifier = Modifier
+            .clickable(enabled = !isCodeConfirmed.value, onClick = {
+                showDialog.value = true
+            })
+            .padding(16.dp)
+            .fillMaxWidth()
+            .height(55.dp)
+            .clip(RoundedCornerShape(100))
+            .background(
+                color = if (isCodeConfirmed.value) Color.Green else Color.Blue,
+                shape = RoundedCornerShape(100)
+            )
+    ) {
+        Text(
+            text = if (isCodeConfirmed.value) "You have confirmed your volunteer status" else "Confirm your volunteer status",
+            color = Color.White,
+            style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        )
+    }
+
+    if (showDialog.value) {
+        Dialog(onDismissRequest = { dismissAlertDialog() }) {
+            Surface(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(text = "Confirm Volunteer Status")
+
+                    TextField(
+                        value = codeInput.value,
+                        onValueChange = { input ->
+                            if (input.isDigitsOnly()) {
+                                if (input.length <= 10) {
+                                    codeInput.value = input
+                                } else {
+                                    showToast("Code should not exceed 10 digits", context)
+                                }
+                            } else {
+                                showToast("Invalid code format", context)
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp),
+                        label = { Text("Enter Confirmation Code") },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    )
+
+                    Button(
+                        onClick = {
+                            // Perform actions when the button is clicked
+                            if (codeInput.value == "your_confirmation_code") {
+                                isCodeConfirmed.value = true
+                            }
+                        },
+                        enabled = !isCodeConfirmed.value
+                    ) {
+                        Text(
+                            text = if (isCodeConfirmed.value) "You have confirmed your volunteer status" else "Confirm"
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+fun showToast(message: String, context: Context) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+}
 
 
 
